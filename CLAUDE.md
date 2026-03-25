@@ -7,8 +7,9 @@ Personalized landing pages for 10 prospects, each showing how Clay.com can help 
 - **Personalization:** Research each company, address prospect by first name, tailor messaging to their job title and company context
 - **Tech:** Split assets (shared CSS + JS), individual HTML files per prospect, no build script needed
 - **CTA:** "Book a Meeting" → `https://clay.com/demo`
-- **Design:** Modern dark theme (deep navy-black bg, purple-to-cyan gradient accents, Inter font) — inspired by Clay but not a copy
-- **Hosting:** Local files for now, can configure deployment later
+- **Design:** Modern dark theme (`#07070D` bg, orange-to-amber gradient accents `#F97316 → #FCD34D`, Bricolage Grotesque + Outfit + JetBrains Mono fonts) — inspired by Clay but not a copy
+- **Hosting:** Vercel — `https://clay-landing-pages.vercel.app`
+- **GitHub:** `https://github.com/GabFeito23/clay-landing-pages` (public, connected, up to date)
 
 ## File Structure
 ```
@@ -17,6 +18,7 @@ LandPagesCohort2/
 ├── clay_value_prop.txt                ← Clay's value proposition reference
 ├── clay_icp.txt                       ← Clay's ICP reference
 ├── landing-page-prospects.csv        ← 10 prospects
+├── index.html                         ← Hub page (DONE ✅) — lists all 10 prospects
 ├── assets/
 │   ├── css/styles.css                ← shared styles (DONE)
 │   └── js/main.js                    ← shared JS / animations (DONE)
@@ -57,19 +59,21 @@ LandPagesCohort2/
 8. **Final CTA Banner** — Personalized closing line + "Book a Meeting"
 9. **Footer** — Clay logo + copyright
 
-## Design System (styles.css)
-- **Background:** `#07070e` (deep dark)
-- **Cards:** `#0f0f1c` with `rgba(255,255,255,0.07)` border
-- **Accent gradient:** `#7c3aed` (purple) → `#06b6d4` (cyan)
-- **Text gradient:** `#a78bfa` → `#22d3ee`
-- **Font:** Inter (Google Fonts), weights 300–900
-- **Animations:** `.fade-up` class + IntersectionObserver, animated stat counters
+## Design System
+- **Background:** `#07070D` (deep dark), `#0B0B16` (surface)
+- **Cards:** `rgba(255,255,255,0.03)` with `rgba(255,255,255,0.07)` border
+- **Accent gradient:** `#F97316` (orange) → `#FCD34D` (amber)
+- **Text:** `#EEF2FF` primary, `#8B95A8` secondary, `#3C4557` muted
+- **Fonts:** Bricolage Grotesque (headings), Outfit (body), JetBrains Mono (mono/labels)
+- **Animations:** `.r` + `.in` classes via IntersectionObserver, film grain overlay, animated stat counters
+- **Film grain:** Fixed `body::after` SVG noise overlay at 0.45 opacity
 
 ## Current Status
-All 10 pages are built. Deployment to Vercel is pending.
+All 10 pages + hub index are built.
 
 | File | Status |
 |------|--------|
+| index.html | DONE ✅ |
 | sarah-mitchell-retool.html | DONE ✅ |
 | marcus-chen-linear.html | DONE ✅ |
 | emily-rodriguez-loom.html | DONE ✅ |
@@ -81,8 +85,8 @@ All 10 pages are built. Deployment to Vercel is pending.
 | jessica-thompson-amplitude.html | DONE ✅ |
 | michael-santos-calendly.html | DONE ✅ |
 
-**Hosting:** Vercel — production URL: `https://clay-sarah-retool-ruby.vercel.app`
-Root `/` routes to Sarah Mitchell's page. Each prospect's page is at `/<filename>.html`.
+**Hosting:** Vercel — production URL: `https://clay-landing-pages.vercel.app`
+Root `/` routes to the hub index page. Each prospect's page is at `/<filename>.html`.
 
 ## Personalization Notes Per Remaining Prospect
 
