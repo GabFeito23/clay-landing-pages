@@ -8,7 +8,7 @@ Personalized landing pages for 10 prospects, each showing how Clay.com can help 
 - **Tech:** Split assets (shared CSS + JS), individual HTML files per prospect, no build script needed
 - **CTA:** "Book a Meeting" → `https://clay.com/demo`
 - **Design:** Modern dark theme (`#07070D` bg, orange-to-amber gradient accents `#F97316 → #FCD34D`, Bricolage Grotesque + Outfit + JetBrains Mono fonts) — inspired by Clay but not a copy
-- **Hosting:** Vercel — `https://clay-landing-pages.vercel.app`
+- **Hosting:** Vercel — `https://clay-landing-pages-blue.vercel.app`
 - **GitHub:** `https://github.com/GabFeito23/clay-landing-pages` (public, connected, up to date)
 
 ## File Structure
@@ -85,7 +85,7 @@ All 10 pages + hub index are built.
 | jessica-thompson-amplitude.html | DONE ✅ |
 | michael-santos-calendly.html | DONE ✅ |
 
-**Hosting:** Vercel — production URL: `https://clay-landing-pages.vercel.app`
+**Hosting:** Vercel — production URL: `https://clay-landing-pages-blue.vercel.app`
 Root `/` routes to the hub index page. Each prospect's page is at `/<filename>.html`.
 
 ## Personalization Notes Per Remaining Prospect
