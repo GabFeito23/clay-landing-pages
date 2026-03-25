@@ -1,5 +1,4 @@
 {
-  "rewrites": [
-    { "source": "/", "destination": "/sarah-mitchell-retool.html" }
-  ]
+  "cleanUrls": true,
+  "trailingSlash": false
 }
