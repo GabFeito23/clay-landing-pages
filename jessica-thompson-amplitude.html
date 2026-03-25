@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clay × Amplitude — For Jessica Thompson</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+  /* ─── RESET ───────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* ─── TOKENS ──────────────────────────────────── */
+  :root {
+    --bg:        #07070D;
+    --bg-2:      #0B0B16;
+    --surface:   rgba(255,255,255,0.03);
+    --border:    rgba(255,255,255,0.07);
+    --bd-hot:    rgba(249,115,22,0.28);
+
+    --orange:    #F97316;
+    --orange-2:  #FB923C;
+    --amber:     #FCD34D;
+
+    --text:      #EEF2FF;
+    --text-2:    #8B95A8;
+    --text-3:    #3C4557;
+
+    --d:  'Bricolage Grotesque', system-ui, sans-serif;
+    --b:  'Outfit', system-ui, sans-serif;
+    --m:  'JetBrains Mono', monospace;
+
+    --r:   10px;
+    --rl:  16px;
+    --rxl: 22px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--b);
+    background: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1.6;
+  }
+
+  /* Film grain overlay */
+  body::after {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='250' height='250' filter='url(%23g)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 9999; opacity: 0.45;
+  }
+
+  /* ─── LAYOUT UTILS ───────────────────────────── */
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 28px; }
+
+  .accent {
+    background: linear-gradient(135deg, var(--orange) 0%, var(--amber) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* ─── REVEAL ANIMATIONS ───────────────────────── */
+  .r {
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity 0.72s cubic-bezier(.16,1,.3,1),
+                transform 0.72s cubic-bezier(.16,1,.3,1);
+  }
+  .r.in    { opacity: 1; transform: translateY(0); }
+  .d1 { transition-delay: 0.08s; }
+  .d2 { transition-delay: 0.16s; }
+  .d3 { transition-delay: 0.24s; }
+  .d4 { transition-delay: 0.32s; }
+
+  /* ─── BUTTONS ─────────────────────────────────── */
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 13px 26px; border-radius: var(--r);
+    font-family: var(--b); font-size: 14px; font-weight: 600;
+    text-decoration: none; cursor: pointer; border: none;
+    transition: all 0.22s ease; white-space: nowrap;
+    letter-spacing: -0.1px;
+  }
+  .btn-primary {
+    background: var(--orange); color: #fff;
+    box-shadow: 0 0 0 1px rgba(249,115,22,.2), 0 8px 24px rgba(249,115,22,.28);
+  }
+  .btn-primary:hover {
+    background: var(--orange-2);
+    transform: translateY(-2px);
+    box-shadow: 0 0 0 1px rgba(249,115,22,.35), 0 14px 36px rgba(249,115,22,.42);
+  }
+  .btn-ghost {
+    background: transparent; color: var(--text-2);
+    border: 1px solid var(--border);
+  }
+  .btn-ghost:hover {
+    border-color: rgba(249,115,22,.25); color: var(--text);
+    background: rgba(249,115,22,.05);
+  }
+  .btn-lg { padding: 16px 36px; font-size: 16px; border-radius: 12px; }
+
+  /* ─── NAV ─────────────────────────────────────── */
+  .nav {
+    position: sticky; top: 0; z-index: 500;
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(22px); -webkit-backdrop-filter: blur(22px);
+    background: rgba(7,7,13,.88);
+  }
+  .nav-wrap {
+    display: flex; align-items: center; justify-content: space-between;
+    height: 60px; max-width: 1100px; margin: 0 auto; padding: 0 28px;
+  }
+  .nav-logo {
+    font-family: var(--d); font-size: 22px; font-weight: 800; letter-spacing: -0.5px;
+    background: linear-gradient(135deg, var(--orange) 0%, var(--amber) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+
+  /* ─── HERO ────────────────────────────────────── */
+  .hero-section {
+    position: relative; overflow: hidden;
+    padding: 96px 0 80px;
+  }
+  .hero-glow-a {
+    position: absolute; top: -180px; left: -80px;
+    width: 640px; height: 640px; border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(249,115,22,.08) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .hero-glow-b {
+    position: absolute; bottom: -120px; right: -60px;
+    width: 520px; height: 520px; border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(99,102,241,.06) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .hero-dots {
+    position: absolute; inset: 0; pointer-events: none;
+    background-image: radial-gradient(circle, rgba(255,255,255,.075) 1px, transparent 1px);
+    background-size: 30px 30px;
+    -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 40%, black 30%, transparent 100%);
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 40%, black 30%, transparent 100%);
+  }
+
+  .hero-inner {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 56px; align-items: center;
+    position: relative; z-index: 2;
+  }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 5px 14px 5px 10px; border-radius: 100px;
+    border: 1px solid rgba(249,115,22,.22);
+    background: rgba(249,115,22,.07);
+    font-size: 12px; font-weight: 600; color: var(--orange-2);
+    margin-bottom: 28px; letter-spacing: .2px;
+  }
+  .badge-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--orange); flex-shrink: 0;
+    box-shadow: 0 0 6px var(--orange);
+    animation: blink 2s ease-in-out infinite;
+  }
+  @keyframes blink {
+    0%,100% { opacity: 1; transform: scale(1); }
+    50%      { opacity: .4; transform: scale(.75); }
+  }
+
+  .hero-h1 {
+    font-family: var(--d);
+    font-size: clamp(34px, 4.2vw, 56px);
+    font-weight: 800; line-height: 1.06; letter-spacing: -2px;
+    margin-bottom: 22px;
+  }
+  .hero-sub {
+    font-size: 17px; color: var(--text-2);
+    max-width: 470px; line-height: 1.78; margin-bottom: 40px; font-weight: 400;
+  }
+  .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
+  .hero-trust {
+    font-size: 12px; color: var(--text-3); font-weight: 500;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .hero-trust::before {
+    content: ''; display: block; width: 22px; height: 1px; background: var(--text-3);
+  }
+
+  /* ── Pipeline art card ── */
+  .pipeline-card {
+    width: 100%; max-width: 420px;
+    background: rgba(255,255,255,.025);
+    border: 1px solid var(--border);
+    border-radius: var(--rxl); padding: 26px;
+    box-shadow: 0 28px 72px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.06);
+    position: relative; overflow: hidden;
+  }
+  .pipeline-card::before {
+    content: '';
+    position: absolute; inset: 0; border-radius: inherit;
+    background: radial-gradient(ellipse at top, rgba(249,115,22,.07) 0%, transparent 55%);
+    pointer-events: none;
+  }
+  .pc-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding-bottom: 16px; margin-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .pc-title {
+    font-family: var(--m); font-size: 10px; color: var(--text-3);
+    text-transform: uppercase; letter-spacing: .6px;
+  }
+  .pc-badge {
+    font-family: var(--m); font-size: 10px; color: #4ade80;
+    background: rgba(74,222,128,.1); border: 1px solid rgba(74,222,128,.2);
+    padding: 3px 8px; border-radius: 4px;
+  }
+  .pc-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 12px; border-radius: 8px;
+    background: rgba(255,255,255,.025);
+    border: 1px solid rgba(255,255,255,.05);
+    margin-bottom: 7px; transition: border-color .2s;
+  }
+  .pc-row:last-of-type { margin-bottom: 0; }
+  .pc-row-l { display: flex; align-items: center; gap: 10px; }
+  .pc-ico {
+    width: 28px; height: 28px; border-radius: 6px;
+    background: var(--border); display: flex; align-items: center;
+    justify-content: center; font-size: 13px; flex-shrink: 0;
+  }
+  .pc-name { font-size: 13px; font-weight: 600; color: var(--text); }
+  .pc-hint { font-size: 11px; color: var(--text-3); margin-top: 1px; }
+  .pc-val  { font-family: var(--m); font-size: 12px; font-weight: 700; color: var(--orange-2); }
+  .pc-row-hl { border-color: rgba(249,115,22,.25); background: rgba(249,115,22,.06); }
+  .pc-row-hl .pc-ico { background: rgba(249,115,22,.12); border: 1px solid rgba(249,115,22,.25); }
+  .pc-row-hl .pc-name { color: var(--orange-2); }
+  .pc-row-hl .pc-val  { font-size: 15px; }
+  .pc-foot {
+    margin-top: 18px; padding-top: 14px;
+    border-top: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .pc-foot-label { font-size: 12px; color: var(--text-3); }
+  .pc-foot-val {
+    font-family: var(--d); font-size: 22px; font-weight: 800; letter-spacing: -1px;
+    background: linear-gradient(135deg, var(--orange) 0%, var(--amber) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+
+  /* ─── LOGOS MARQUEE ──────────────────────────── */
+  .logos-strip {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: rgba(255,255,255,.01);
+    padding: 30px 0; overflow: hidden;
+  }
+  .logos-label {
+    text-align: center; font-size: 11px; font-weight: 600;
+    color: var(--text-3); text-transform: uppercase;
+    letter-spacing: 1.5px; margin-bottom: 22px;
+  }
+  .marquee { overflow: hidden; }
+  .marquee-track {
+    display: flex; gap: 60px;
+    animation: scroll 26s linear infinite;
+    width: max-content;
+  }
+  .marquee:hover .marquee-track { animation-play-state: paused; }
+  @keyframes scroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+  .logo-name {
+    font-family: var(--d); font-size: 15px; font-weight: 700;
+    color: var(--text-3); letter-spacing: -.3px; white-space: nowrap;
+    transition: color .2s;
+  }
+  .logo-name:hover { color: var(--text-2); }
+
+  /* ─── SECTION GLOBALS ────────────────────────── */
+  .section { padding: 88px 0; }
+  .sec-label {
+    font-family: var(--m); font-size: 11px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 2px;
+    color: var(--orange); margin-bottom: 14px; display: block;
+  }
+  .sec-h2 {
+    font-family: var(--d);
+    font-size: clamp(28px, 3.4vw, 44px);
+    font-weight: 800; letter-spacing: -1.5px;
+    line-height: 1.1; margin-bottom: 16px;
+  }
+  .sec-p {
+    font-size: 17px; color: var(--text-2);
+    max-width: 520px; line-height: 1.75;
+  }
+  .sec-head { margin-bottom: 56px; }
+
+  /* ─── PAIN CARDS ─────────────────────────────── */
+  .pain-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+  .pain-card {
+    background: var(--surface);
+    border: 1px solid var(--border); border-radius: var(--rl);
+    padding: 32px 28px; position: relative; overflow: hidden;
+    transition: border-color .3s, transform .3s, box-shadow .3s;
+  }
+  .pain-card:hover {
+    border-color: var(--bd-hot);
+    transform: translateY(-5px);
+    box-shadow: 0 24px 56px rgba(0,0,0,.42), 0 0 0 1px rgba(249,115,22,.1);
+  }
+  .pain-num {
+    position: absolute; top: 8px; right: 16px;
+    font-family: var(--d); font-size: 88px; font-weight: 800;
+    line-height: 1; letter-spacing: -4px;
+    color: rgba(255,255,255,.028); pointer-events: none;
+    user-select: none;
+  }
+  .pain-ico {
+    width: 40px; height: 40px; border-radius: 8px;
+    background: rgba(249,115,22,.08); border: 1px solid rgba(249,115,22,.15);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; margin-bottom: 18px; flex-shrink: 0;
+  }
+  .pain-card h3 {
+    font-family: var(--d); font-size: 17px; font-weight: 700;
+    letter-spacing: -.3px; margin-bottom: 10px; line-height: 1.3;
+  }
+  .pain-card p { font-size: 14px; color: var(--text-2); line-height: 1.7; }
+
+  /* ─── FEATURES ───────────────────────────────── */
+  .features-section {
+    background: linear-gradient(180deg, transparent, rgba(249,115,22,.018) 50%, transparent);
+    padding: 88px 0;
+  }
+  .feat-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 22px; }
+  .feat-card {
+    background: var(--surface);
+    border: 1px solid var(--border); border-radius: var(--rl);
+    padding: 36px 32px; position: relative; overflow: hidden;
+    transition: all .3s ease;
+  }
+  .feat-card::after {
+    content: ''; position: absolute;
+    top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, var(--orange), var(--amber));
+    transform: scaleX(0); transform-origin: left;
+    transition: transform .38s ease;
+  }
+  .feat-card:hover::after   { transform: scaleX(1); }
+  .feat-card:hover {
+    border-color: rgba(249,115,22,.22);
+    transform: translateY(-3px);
+    box-shadow: 0 28px 56px rgba(0,0,0,.32);
+  }
+  .feat-tag {
+    font-family: var(--m); font-size: 10px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 1.5px;
+    color: var(--orange); margin-bottom: 16px; display: block;
+  }
+  .feat-card h3 {
+    font-family: var(--d); font-size: 20px; font-weight: 700;
+    letter-spacing: -.5px; line-height: 1.22; margin-bottom: 12px;
+  }
+  .feat-card > p {
+    font-size: 14.5px; color: var(--text-2);
+    line-height: 1.72; margin-bottom: 20px;
+  }
+  .feat-list { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+  .feat-list li {
+    font-size: 13px; color: var(--text-2);
+    display: flex; align-items: flex-start; gap: 9px; line-height: 1.5;
+  }
+  .feat-list li::before {
+    content: '▸'; color: var(--orange); font-size: 10px;
+    flex-shrink: 0; margin-top: 2px;
+  }
+
+  /* ─── STATS ──────────────────────────────────── */
+  .stats-section {
+    padding: 80px 0; position: relative; overflow: hidden;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-2);
+  }
+  .stats-section::before {
+    content: ''; position: absolute;
+    top: 50%; left: 50%; transform: translate(-50%,-50%);
+    width: 700px; height: 400px;
+    background: radial-gradient(ellipse, rgba(249,115,22,.08) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .stats-grid {
+    display: grid; grid-template-columns: repeat(4,1fr);
+    gap: 24px; position: relative; z-index: 2;
+  }
+  .stat-item { text-align: center; padding: 20px; }
+  .stat-number {
+    font-family: var(--d); font-size: 58px; font-weight: 800;
+    letter-spacing: -3px; line-height: 1; display: block;
+    background: linear-gradient(135deg, var(--orange) 0%, var(--amber) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    margin-bottom: 10px;
+  }
+  .stat-desc { font-size: 14px; color: var(--text-2); line-height: 1.5; }
+
+  /* ─── TESTIMONIAL ────────────────────────────── */
+  .testimonial-section { padding: 88px 0; }
+  .t-card {
+    max-width: 820px; margin: 0 auto;
+    background: var(--surface);
+    border: 1px solid var(--border); border-radius: var(--rxl);
+    padding: 52px 56px; position: relative; overflow: hidden;
+  }
+  .t-card::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at top left, rgba(249,115,22,.07) 0%, transparent 55%);
+    pointer-events: none;
+  }
+  .t-qmark {
+    font-family: Georgia, serif; font-size: 128px; line-height: .7;
+    color: var(--orange); opacity: .12;
+    position: absolute; top: 28px; left: 44px; pointer-events: none;
+  }
+  .t-text {
+    font-family: var(--d); font-size: 19px; line-height: 1.75;
+    font-style: italic; color: var(--text);
+    padding-top: 24px; margin-bottom: 36px; position: relative;
+  }
+  .t-author { display: flex; align-items: center; gap: 14px; }
+  .t-avatar {
+    width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0;
+    background: linear-gradient(135deg, var(--orange) 0%, var(--amber) 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 15px; color: white;
+  }
+  .t-name  { font-weight: 700; font-size: 15px; margin-bottom: 2px; }
+  .t-title { font-size: 13px; color: var(--text-3); }
+
+  /* ─── CTA BANNER ─────────────────────────────── */
+  .cta-section {
+    padding: 100px 0; text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .cta-glow {
+    position: absolute; bottom: -100px; left: 50%; transform: translateX(-50%);
+    width: 800px; height: 600px;
+    background: radial-gradient(ellipse, rgba(249,115,22,.11) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .cta-grid {
+    position: absolute; inset: 0;
+    background-image:
+      repeating-linear-gradient(rgba(255,255,255,.025) 0px, rgba(255,255,255,.025) 1px, transparent 1px, transparent 56px),
+      repeating-linear-gradient(90deg, rgba(255,255,255,.025) 0px, rgba(255,255,255,.025) 1px, transparent 1px, transparent 56px);
+    -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 20%, transparent 100%);
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 20%, transparent 100%);
+    pointer-events: none;
+  }
+  .cta-section h2 {
+    font-family: var(--d);
+    font-size: clamp(30px, 4.4vw, 52px);
+    font-weight: 800; letter-spacing: -2px; line-height: 1.06;
+    margin-bottom: 20px; position: relative;
+  }
+  .cta-section > .container > p {
+    font-size: 18px; color: var(--text-2);
+    max-width: 460px; margin: 0 auto 44px;
+    line-height: 1.72; position: relative;
+  }
+  .cta-actions { position: relative; }
+  .cta-note { margin-top: 14px; font-size: 12px; color: var(--text-3); }
+
+  /* ─── FOOTER ─────────────────────────────────── */
+  .site-footer { border-top: 1px solid var(--border); padding: 28px 0; }
+  .footer-inner {
+    max-width: 1100px; margin: 0 auto; padding: 0 28px;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 12px;
+  }
+  .footer-logo {
+    font-family: var(--d); font-size: 18px; font-weight: 800; letter-spacing: -.5px;
+    background: linear-gradient(135deg, var(--orange) 0%, var(--amber) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .footer-copy { font-size: 13px; color: var(--text-3); }
+
+  /* ─── RESPONSIVE ──────────────────────────────── */
+  @media (max-width: 900px) {
+    .hero-inner      { grid-template-columns: 1fr; }
+    .pipeline-visual { display: none; }
+    .pain-grid       { grid-template-columns: 1fr; }
+    .feat-grid       { grid-template-columns: 1fr; }
+    .stats-grid      { grid-template-columns: repeat(2,1fr); gap: 20px; }
+  }
+  @media (max-width: 640px) {
+    .hero-h1         { letter-spacing: -1.5px; }
+    .t-card          { padding: 36px 28px; }
+    .t-qmark         { font-size: 80px; top: 22px; left: 24px; }
+    .cta-section     { padding: 72px 0; }
+    .stats-grid      { grid-template-columns: repeat(2,1fr); }
+    .stat-number     { font-size: 44px; letter-spacing: -2px; }
+    .section         { padding: 64px 0; }
+  }
+  </style>
+</head>
+<body>
+
+<!-- ═══ NAV ════════════════════════════════════ -->
+<nav class="nav">
+  <div class="nav-wrap">
+    <span class="nav-logo">clay</span>
+    <a href="https://clay.com/demo" class="btn btn-primary">Book a Meeting</a>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══════════════════════════════════ -->
+<section class="hero-section">
+  <div class="hero-glow-a"></div>
+  <div class="hero-glow-b"></div>
+  <div class="hero-dots"></div>
+
+  <div class="container">
+    <div class="hero-inner">
+
+      <!-- Left: copy -->
+      <div class="hero-copy">
+        <div class="hero-badge r">
+          <span class="badge-dot"></span>
+          Personalized for Jessica Thompson · Head of Demand Generation, Amplitude
+        </div>
+        <h1 class="hero-h1 r d1">
+          Jessica, every inbound lead deserves instant enrichment —<br />
+          <span class="accent">not an 18-hour wait.</span>
+        </h1>
+        <p class="hero-sub r d2">
+          As Head of Demand Gen at Amplitude, you're generating inbound pipeline at scale. But if every new lead sits in a queue waiting for manual enrichment before reps can act, you're losing deals to speed-to-lead. Clay enriches every inbound lead the moment it arrives — so your reps strike while the intent is hot.
+        </p>
+        <div class="hero-actions r d3">
+          <a href="https://clay.com/demo" class="btn btn-primary btn-lg">Book a Meeting &rarr;</a>
+          <a href="https://clay.com"      class="btn btn-ghost  btn-lg">See How It Works</a>
+        </div>
+        <p class="hero-trust r d4">Trusted by 5,000+ revenue teams including OpenAI, Ramp, and Notion</p>
+      </div>
+
+      <!-- Right: pipeline visualization -->
+      <div class="pipeline-visual r d2">
+        <div class="pipeline-card">
+          <div class="pc-head">
+            <span class="pc-title">inbound enrichment · amplitude-leads.csv</span>
+            <span class="pc-badge">● Real-time</span>
+          </div>
+
+          <div class="pc-row">
+            <div class="pc-row-l">
+              <div class="pc-ico">⏱️</div>
+              <div>
+                <div class="pc-name">Time to enrich before Clay</div>
+                <div class="pc-hint">Avg per new lead</div>
+              </div>
+            </div>
+            <span class="pc-val">18 hours</span>
+          </div>
+
+          <div class="pc-row">
+            <div class="pc-row-l">
+              <div class="pc-ico">⚡</div>
+              <div>
+                <div class="pc-name">Time to enrich with Clay</div>
+                <div class="pc-hint">Automated on form submit</div>
+              </div>
+            </div>
+            <span class="pc-val">90 seconds</span>
+          </div>
+
+          <div class="pc-row">
+            <div class="pc-row-l">
+              <div class="pc-ico">📊</div>
+              <div>
+                <div class="pc-name">Lead score accuracy</div>
+                <div class="pc-hint">With full enrichment data</div>
+              </div>
+            </div>
+            <span class="pc-val">+67% better</span>
+          </div>
+
+          <div class="pc-row pc-row-hl">
+            <div class="pc-row-l">
+              <div class="pc-ico">✓</div>
+              <div>
+                <div class="pc-name">MQL → SQL conversion lift</div>
+                <div class="pc-hint">vs. previous quarter</div>
+              </div>
+            </div>
+            <span class="pc-val">+34%</span>
+          </div>
+
+          <div class="pc-foot">
+            <span class="pc-foot-label">Leads enriched automatically per month</span>
+            <span class="pc-foot-val">4,200+</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ LOGOS MARQUEE ══════════════════════════ -->
+<div class="logos-strip">
+  <p class="logos-label">Trusted by the world's best GTM teams</p>
+  <div class="marquee">
+    <div class="marquee-track">
+      <span class="logo-name">OpenAI</span>
+      <span class="logo-name">Anthropic</span>
+      <span class="logo-name">Ramp</span>
+      <span class="logo-name">Rippling</span>
+      <span class="logo-name">Vanta</span>
+      <span class="logo-name">Notion</span>
+      <span class="logo-name">Intercom</span>
+      <span class="logo-name">Canva</span>
+      <span class="logo-name">Figma</span>
+      <span class="logo-name">Brex</span>
+      <!-- duplicate for seamless loop -->
+      <span class="logo-name">OpenAI</span>
+      <span class="logo-name">Anthropic</span>
+      <span class="logo-name">Ramp</span>
+      <span class="logo-name">Rippling</span>
+      <span class="logo-name">Vanta</span>
+      <span class="logo-name">Notion</span>
+      <span class="logo-name">Intercom</span>
+      <span class="logo-name">Canva</span>
+      <span class="logo-name">Figma</span>
+      <span class="logo-name">Brex</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PAIN POINTS ════════════════════════════ -->
+<section class="section">
+  <div class="container">
+    <div class="sec-head r">
+      <span class="sec-label">The Problem</span>
+      <h2 class="sec-h2">Inbound demand gen pain<br />at Amplitude's scale is real.</h2>
+      <p class="sec-p">You're building pipeline at volume — but incomplete data and slow enrichment are bleeding conversion at every stage.</p>
+    </div>
+    <div class="pain-grid">
+      <div class="pain-card r d1">
+        <span class="pain-num">01</span>
+        <div class="pain-ico">⏳</div>
+        <h3>Inbound leads sit in a queue waiting to be enriched before reps can act</h3>
+        <p>A form submission represents peak intent. But if your rep doesn't have enriched data for 18 hours, that window closes fast. The prospect has already talked to two competitors by the time your team has a complete picture.</p>
+      </div>
+      <div class="pain-card r d2">
+        <span class="pain-num">02</span>
+        <div class="pain-ico">🎯</div>
+        <h3>Your lead scoring is built on incomplete form data</h3>
+        <p>Lead scores calculated from first-name, company-name, and email domain don't reflect actual buying potential. Without enrichment — company size, funding, tech stack, role seniority — your high-MQL scores and your actual best prospects rarely overlap.</p>
+      </div>
+      <div class="pain-card r d3">
+        <span class="pain-num">03</span>
+        <div class="pain-ico">🗺️</div>
+        <h3>Misrouted leads are burning rep time and trust</h3>
+        <p>When high-value enterprise leads get routed to SMB reps, or worse, fall into a nurture sequence instead of immediate follow-up, you lose deals you should win. Bad routing is a direct consequence of incomplete enrichment data.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FEATURES ═══════════════════════════════ -->
+<section class="features-section">
+  <div class="container">
+    <div class="sec-head r">
+      <span class="sec-label">How Clay Helps</span>
+      <h2 class="sec-h2">Real-time enrichment for<br />every inbound lead.</h2>
+      <p class="sec-p">Clay plugs into your inbound motion and ensures every lead that enters your funnel is enriched, scored, and routed before a rep ever opens the record.</p>
+    </div>
+    <div class="feat-grid">
+
+      <div class="feat-card r d1">
+        <span class="feat-tag">Real-Time Inbound Enrichment</span>
+        <h3>Enrich every new lead the instant they hit your CRM.</h3>
+        <p>Clay integrates with your form or CRM and triggers an enrichment workflow the moment a lead comes in — pulling company size, funding, tech stack, LinkedIn profile, and 50+ additional data points in under 90 seconds.</p>
+        <ul class="feat-list">
+          <li>Enrichment triggered on form submit or CRM entry</li>
+          <li>50+ data points pulled in under 90 seconds</li>
+          <li>Enriched data pushed back to Salesforce or HubSpot automatically</li>
+        </ul>
+      </div>
+
+      <div class="feat-card r d2">
+        <span class="feat-tag">Intelligent Lead Scoring</span>
+        <h3>Score leads on complete data — not just what they told you.</h3>
+        <p>Clay enriches every inbound lead before your scoring model evaluates them — so scores are calculated on full firmographic and behavioral context, not just company name and job title from a form field.</p>
+        <ul class="feat-list">
+          <li>Scoring on 14+ enriched data dimensions</li>
+          <li>Custom ICP weighting for your exact buyer profile</li>
+          <li>Eliminate misclassified MQLs caused by data gaps</li>
+        </ul>
+      </div>
+
+      <div class="feat-card r d3">
+        <span class="feat-tag">Smart Lead Routing</span>
+        <h3>Route every lead to the right rep in seconds.</h3>
+        <p>With enriched, scored leads, Clay powers intelligent routing logic — enterprise leads go to enterprise reps, SMB leads get fast-tracked into sequences, and high-intent signals trigger immediate personal outreach.</p>
+        <ul class="feat-list">
+          <li>Route by company size, industry, score tier, and region</li>
+          <li>Trigger immediate sequences for high-intent inbound</li>
+          <li>Eliminate manual routing decisions that slow response time</li>
+        </ul>
+      </div>
+
+      <div class="feat-card r d4">
+        <span class="feat-tag">MQL Quality</span>
+        <h3>Every MQL backed by verified enrichment data.</h3>
+        <p>Clay ensures every lead that passes your MQL threshold is supported by complete, verified firmographic data — so sales trusts your leads, follow-up rates improve, and the gap between marketing-qualified and sales-accepted closes.</p>
+        <ul class="feat-list">
+          <li>100% MQL enrichment before handoff to sales</li>
+          <li>Verification pass for email validity and company accuracy</li>
+          <li>Shared data standard between marketing and sales</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ STATS ═══════════════════════════════════ -->
+<section class="stats-section">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item r d1">
+        <span class="stat-number" data-count="3" data-suffix="x">3x</span>
+        <p class="stat-desc">enrichment coverage vs. single-provider tools</p>
+      </div>
+      <div class="stat-item r d2">
+        <span class="stat-number" data-count="80" data-suffix="%">80%</span>
+        <p class="stat-desc">faster lead enrichment vs. manual workflows</p>
+      </div>
+      <div class="stat-item r d3">
+        <span class="stat-number" data-count="5000" data-suffix="+">5,000+</span>
+        <p class="stat-desc">GTM teams running Clay workflows today</p>
+      </div>
+      <div class="stat-item r d4">
+        <span class="stat-number" data-count="150" data-suffix="+">150+</span>
+        <p class="stat-desc">data providers in a single waterfall workflow</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TESTIMONIAL ════════════════════════════ -->
+<section class="testimonial-section">
+  <div class="container">
+    <div class="sec-head r" style="text-align:center; margin-bottom:48px;">
+      <span class="sec-label" style="display:block; text-align:center;">What Demand Gen Leaders Say</span>
+      <h2 class="sec-h2" style="max-width:520px; margin: 0 auto 0;">Built for demand gen teams<br />who live by speed-to-lead.</h2>
+    </div>
+    <div class="t-card r">
+      <div class="t-qmark">"</div>
+      <p class="t-text">
+        "Speed-to-lead was our biggest problem. We'd generate great inbound, and by the time the rep had context to act, the prospect had already evaluated two competitors. Clay changed that completely. Every lead is enriched before it even hits the rep's queue — scored, routed, and ready for an informed conversation. Our speed-to-lead went from hours to minutes and our MQL-to-SQL rate jumped 34% in the first quarter."
+      </p>
+      <div class="t-author">
+        <div class="t-avatar">RC</div>
+        <div>
+          <p class="t-name">Riley Chang</p>
+          <p class="t-title">Head of Demand Generation · B2B SaaS</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CTA BANNER ═════════════════════════════ -->
+<section class="cta-section">
+  <div class="cta-glow"></div>
+  <div class="cta-grid"></div>
+  <div class="container">
+    <h2 class="r">
+      Ready to make every Amplitude inbound lead<br />
+      <span class="accent">count from the first second?</span>
+    </h2>
+    <p class="r d1">
+      See how Clay enriches leads in real time, improves your scoring accuracy, and gives your reps the context they need to convert — before the window closes.
+    </p>
+    <div class="cta-actions r d2">
+      <a href="https://clay.com/demo" class="btn btn-primary btn-lg">Book a Meeting &rarr;</a>
+      <p class="cta-note">No commitment. We'll walk through your current inbound enrichment gap and show you the fix.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ══════════════════════════════════ -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span class="footer-logo">clay</span>
+    <p class="footer-copy">© 2025 Clay. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+/* ── Reveal on scroll ─────────────────────── */
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('in');
+      revealObs.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.r').forEach(el => revealObs.observe(el));
+
+/* ── Animated stat counters ───────────────── */
+const countObs = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    const el      = entry.target;
+    const target  = parseFloat(el.dataset.count);
+    const suffix  = el.dataset.suffix || '';
+    const dur     = 1500;
+    const start   = performance.now();
+
+    const fmt = n => (target >= 1000)
+      ? Math.round(n).toLocaleString()
+      : (Number.isInteger(target) ? Math.round(n).toString() : n.toFixed(1));
+
+    const tick = now => {
+      const p = Math.min((now - start) / dur, 1);
+      const e = 1 - Math.pow(1 - p, 3);        // ease-out-cubic
+      el.textContent = fmt(e * target) + suffix;
+      if (p < 1) requestAnimationFrame(tick);
+    };
+
+    requestAnimationFrame(tick);
+    countObs.unobserve(el);
+  });
+}, { threshold: 0.5 });
+
+document.querySelectorAll('.stat-number[data-count]').forEach(el => countObs.observe(el));
+</script>
+
+</body>
+</html>

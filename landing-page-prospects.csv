@@ -1,0 +1,11 @@
+first_name,last_name,email,title,company,company_website,linkedin_url,personalized_website
+Sarah,Mitchell,sarah.mitchell@retool.com,VP of Revenue Operations,Retool,https://retool.com,https://linkedin.com/in/sarahmitchell,https://clay-sarah-retool-ruby.vercel.app/sarah-mitchell-retool.html
+Marcus,Chen,marcus.chen@linear.app,Head of Growth,Linear,https://linear.app,https://linkedin.com/in/marcuschen,https://clay-sarah-retool-ruby.vercel.app/marcus-chen-linear.html
+Emily,Rodriguez,emily.rodriguez@loom.com,Director of Sales Development,Loom,https://www.loom.com,https://linkedin.com/in/emilyrodriguez,https://clay-sarah-retool-ruby.vercel.app/emily-rodriguez-loom.html
+James,Okonkwo,james.okonkwo@webflow.com,GTM Engineer,Webflow,https://webflow.com,https://linkedin.com/in/jamesokonkwo,https://clay-sarah-retool-ruby.vercel.app/james-okonkwo-webflow.html
+Rachel,Goldstein,rachel.goldstein@airtable.com,VP of Sales,Airtable,https://www.airtable.com,https://linkedin.com/in/rachelgoldstein,https://clay-sarah-retool-ruby.vercel.app/rachel-goldstein-airtable.html
+David,Park,david.park@monday.com,Head of Revenue Operations,monday.com,https://monday.com,https://linkedin.com/in/davidpark,https://clay-sarah-retool-ruby.vercel.app/david-park-monday.html
+Amanda,Sullivan,amanda.sullivan@asana.com,Director of Growth Marketing,Asana,https://asana.com,https://linkedin.com/in/amandasullivan,https://clay-sarah-retool-ruby.vercel.app/amanda-sullivan-asana.html
+Kevin,Nakamura,kevin.nakamura@mixpanel.com,VP of Marketing,Mixpanel,https://mixpanel.com,https://linkedin.com/in/kevinnakamura,https://clay-sarah-retool-ruby.vercel.app/kevin-nakamura-mixpanel.html
+Jessica,Thompson,jessica.thompson@amplitude.com,Head of Demand Generation,Amplitude,https://amplitude.com,https://linkedin.com/in/jessicathompson,https://clay-sarah-retool-ruby.vercel.app/jessica-thompson-amplitude.html
+Michael,Santos,michael.santos@calendly.com,Director of RevOps,Calendly,https://calendly.com,https://linkedin.com/in/michaelsantos,https://clay-sarah-retool-ruby.vercel.app/michael-santos-calendly.html
